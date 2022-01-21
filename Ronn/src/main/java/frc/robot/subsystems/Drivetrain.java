@@ -290,8 +290,8 @@ public class Drivetrain extends SubsystemBase {
       }
   
       public void Drive(Joystick stick) {
-          //cheesyDrive(stick);
-          tankDrive(stick);
+          cheesyDrive(stick);
+         // tankDrive(stick);
       }
   
       /**

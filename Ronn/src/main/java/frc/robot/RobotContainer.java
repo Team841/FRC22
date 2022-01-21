@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Auto1OffTarmac;
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +28,9 @@ import frc.robot.C.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+ 
   // The robot's subsystems and commands are defined here...
+ 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -34,10 +38,18 @@ public class RobotContainer {
   private final Drivetrain m_driveTrain = new Drivetrain();
 
   private final Joystick m_driverCtrl = new Joystick(C.OI.driverPort);
+ 
   private final Joystick m_codriverCtrl = new Joystick(C.OI.codriverPort);
+
+  private SendableChooser<Command> chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    chooser.addOption("Auto1OffTarman", new Auto1OffTarmac(m_driveTrain));
+    chooser.addOption("AutoDrive", new AutoDrive(m_driveTrain));
+    SmartDashboard.putData("Auto mode", chooser);
+
     // Configure the button bindings
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(
@@ -68,7 +80,16 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+    //Command m_command = new Auto1OffTarmac(m_driveTrain);
+     return chooser.getSelected(); 
+     
+
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+
+    // return m_autoCommand;
+
   }
 }
+
+
