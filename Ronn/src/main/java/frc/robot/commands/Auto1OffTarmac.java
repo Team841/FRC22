@@ -13,8 +13,6 @@ public class Auto1OffTarmac extends SequentialCommandGroup {
   public Auto1OffTarmac (Drivetrain m_Drivetrain) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-
-    new SetDriveStraightPower((m_Drivetrain),+.3).withTimeout(1);
-  } 
+    super(new SetDriveStraightPower((m_Drivetrain),+.3).withTimeout(1));
+  }
 }
-

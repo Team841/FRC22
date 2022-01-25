@@ -14,8 +14,8 @@ public class AutoDrive extends SequentialCommandGroup {
    */
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-
-    new SetDriveStraightPower((m_Drivetrain),-.3).withTimeout(1.85);
+        super( new SetDriveStraightPower((m_Drivetrain),-.3).withTimeout(1.85));
+    
   } 
 }
 

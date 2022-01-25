@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto1OffTarmac;
 import frc.robot.commands.AutoDrive;
+import frc.robot.commands.Auto1Ball;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,7 +36,7 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
-  private final Drivetrain m_driveTrain = new Drivetrain();
+  private final Drivetrain m_Drivetrain = new Drivetrain();
 
   private final Joystick m_driverCtrl = new Joystick(C.OI.driverPort);
  
@@ -46,14 +47,16 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    chooser.addOption("Auto1OffTarman", new Auto1OffTarmac(m_driveTrain));
-    chooser.addOption("AutoDrive", new AutoDrive(m_driveTrain));
+    
+    chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain));
+    chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
+    chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
     SmartDashboard.putData("Auto mode", chooser);
 
     // Configure the button bindings
     configureButtonBindings();
-    m_driveTrain.setDefaultCommand(
-      new RunCommand(() -> m_driveTrain.Drive(m_driverCtrl),m_driveTrain)
+    m_Drivetrain.setDefaultCommand(
+      new RunCommand(() -> m_Drivetrain.Drive(m_driverCtrl),m_Drivetrain)
       );
 
   }
@@ -69,8 +72,8 @@ public class RobotContainer {
     //DRIVER
     //Quick turn
     final JoystickButton qT = new JoystickButton(m_driverCtrl, C.OI.kRB);
-    qT.whenPressed(new InstantCommand(m_driveTrain::setQuickTurn, m_driveTrain));
-    qT.whenReleased(new InstantCommand(m_driveTrain::resetQuickTurn, m_driveTrain));
+    qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
+    qT.whenReleased(new InstantCommand(m_Drivetrain::resetQuickTurn, m_Drivetrain));
 
   }
 
