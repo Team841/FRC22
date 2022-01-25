@@ -25,6 +25,7 @@ public final class C {
         public static final int driveRight2 = 2; 
         public static final int driveLeft1 = 3;
         public static final int driveLeft2 = 4;
+        public static final int intake = 5;
     }
     public static final class Drive{
         
