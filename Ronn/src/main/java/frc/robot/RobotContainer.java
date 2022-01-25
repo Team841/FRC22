@@ -42,16 +42,16 @@ public class RobotContainer {
  
   private final Joystick m_codriverCtrl = new Joystick(C.OI.codriverPort);
 
-  private SendableChooser<Command> chooser = new SendableChooser<>();
+  private SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     
-    chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain));
-    chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
-    chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
-    SmartDashboard.putData("Auto mode", chooser);
+    m_chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain));
+    m_chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
+    m_chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
+    SmartDashboard.putData("Auto mode", m_chooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -85,7 +85,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     //Command m_command = new Auto1OffTarmac(m_driveTrain);
-     return chooser.getSelected(); 
+     return m_chooser.getSelected(); 
      
 
     // An ExampleCommand will run in autonomous
