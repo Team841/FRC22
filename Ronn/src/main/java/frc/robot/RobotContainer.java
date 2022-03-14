@@ -10,6 +10,8 @@ import frc.robot.commands.Auto1OffTarmac;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.Auto1Ball;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCargo;
+import frc.robot.commands.RetractIntake;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -19,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.C.*;
 
@@ -38,25 +42,35 @@ public class RobotContainer {
   
   private final Drivetrain m_Drivetrain = new Drivetrain();
 
-  private final Joystick m_driverCtrl = new Joystick(C.OI.driverPort);
+  private final Intake m_intake = new Intake();
+
+  private final Shooter m_shooter = new Shooter();
+
+  private final Joystick m_driverCtrlLeft = new Joystick(C.OI.driverPortLeft);
  
+  private final Joystick m_driverCtrlRight = new Joystick(C.OI.driverPortRight);
+
+
+
+
+
   private final Joystick m_codriverCtrl = new Joystick(C.OI.codriverPort);
 
-  private SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private SendableChooser<Command> chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     
-    m_chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain));
-    m_chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
-    m_chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
-    SmartDashboard.putData("Auto mode", m_chooser);
+    chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain));
+    chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
+    chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
+    SmartDashboard.putData("Auto mode", chooser);
 
     // Configure the button bindings
     configureButtonBindings();
     m_Drivetrain.setDefaultCommand(
-      new RunCommand(() -> m_Drivetrain.Drive(m_driverCtrl),m_Drivetrain)
+      new RunCommand(() -> m_Drivetrain.Drive(m_driverCtrlLeft,m_driverCtrlRight),m_Drivetrain)
       );
 
   }
@@ -71,9 +85,15 @@ public class RobotContainer {
 
     //DRIVER
     //Quick turn
-    final JoystickButton qT = new JoystickButton(m_driverCtrl, C.OI.kRB);
+    final JoystickButton qT = new JoystickButton(m_driverCtrlLeft, C.OI.kRB);
     qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
     qT.whenReleased(new InstantCommand(m_Drivetrain::resetQuickTurn, m_Drivetrain));
+    //Cargo button
+    final JoystickButton cG = new JoystickButton(m_codriverCtrl, C.OI.kLT);
+    cG.whenPressed(new IntakeCargo(m_intake));
+    cG.whenReleased(new RetractIntake(m_intake));
+   
+
 
   }
 
@@ -85,7 +105,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     //Command m_command = new Auto1OffTarmac(m_driveTrain);
-     return m_chooser.getSelected(); 
+     return chooser.getSelected(); 
      
 
     // An ExampleCommand will run in autonomous

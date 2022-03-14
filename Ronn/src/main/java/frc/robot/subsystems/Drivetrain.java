@@ -289,9 +289,18 @@ public class Drivetrain extends SubsystemBase {
           return (Math.abs(val) > Math.abs(deadband)) ? val : 0.0;
       }
   
-      public void Drive(Joystick stick) {
-          cheesyDrive(stick);
-         // tankDrive(stick);
+      public void Drive(Joystick stickLeft, Joystick stickRight) {
+        if(C.Drive.drivestyle == C.Drive.tankdrive){
+            tankDrive(stickLeft, stickRight);
+        }
+        else if (C.Drive.drivestyle == C.Drive.chezydrive){
+            cheesyDrive(stickLeft);
+        }
+        else{
+          //Default if input is invalid.
+          cheesyDrive(stickLeft);
+        }
+    
       }
   
       /**
@@ -329,11 +338,12 @@ public class Drivetrain extends SubsystemBase {
       }
 
       //Tank drive style code
-public void tankDrive(Joystick stick){
-  double axisNonLinearity;
-  //Get Y axis and make a deadband 
-  double leftY =  handleDeadband(getYAxisLeftSide(stick),0.02);
-  double rightY =  handleDeadband(getYAxisRightSide(stick),0.02);
+        public void tankDrive(Joystick stickLeft, Joystick stickRight){
+        double axisNonLinearity;
+
+      //Get Y axis and make a deadband 
+        double leftY =  handleDeadband(getThrottle(stickLeft),0.02);
+        double rightY =  handleDeadband(getThrottle(stickRight),0.02);
   
   
    if (isHighGear) {
