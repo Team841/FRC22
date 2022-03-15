@@ -92,6 +92,10 @@ public class RobotContainer {
     final JoystickButton cG = new JoystickButton(m_codriverCtrl, C.OI.kLT);
     cG.whenPressed(new IntakeCargo(m_intake));
     cG.whenReleased(new RetractIntake(m_intake));
+    //Shoot
+    final JoystickButton Shoot = new JoystickButton(m_codriverCtrl, C.OI.kRT);
+    Shoot.whenPressed(new InstantCommand(m_shooter::setShootLow, m_shooter));
+    Shoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
    
 
 

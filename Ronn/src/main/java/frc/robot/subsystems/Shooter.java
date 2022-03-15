@@ -5,42 +5,45 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import frc.robot.C;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  private final TalonFX shootermotor = new TalonFX(8);
-  public static final int kTimeoutMs = 30;
-  public static final int kPIDLoopIdx = 0;
-  //kP   	 kI    kD      kF          Iz    PeakOut */
-public static final double kF = 0.04;
-public static final double kP = 0.01;
-public static final double kI = 0;
-public static final double kD = 0;
+  private final TalonFX shootermotor = new TalonFX(C.shooter.shooterChannel);
 
 
   public Shooter() {
     shootermotor.configFactoryDefault();
-    shootermotor.configNeutralDeadband(0.001);
-    shootermotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,kPIDLoopIdx, kTimeoutMs);
+    shootermotor.configNeutralDeadband(C.shooter.deadband);
+    shootermotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
     		/* Config the peak and nominal outputs */
-        shootermotor.configNominalOutputForward(0, kTimeoutMs);
-        shootermotor.configNominalOutputReverse(0,kTimeoutMs);
-        shootermotor.configPeakOutputForward(1, kTimeoutMs);
-        shootermotor.configPeakOutputReverse(-1, kTimeoutMs);
+        shootermotor.configNominalOutputForward(0, C.shooter.kTimeoutMs);
+        shootermotor.configNominalOutputReverse(0,C.shooter.kTimeoutMs);
+        shootermotor.configPeakOutputForward(1,C.shooter.kTimeoutMs);
+        shootermotor.configPeakOutputReverse(-1,C.shooter.kTimeoutMs);
 
         		/* Config the Velocity closed loop gains in slot0 */
-            shootermotor.config_kF(kPIDLoopIdx, kF, kTimeoutMs);
-            shootermotor.config_kP(kPIDLoopIdx, kP, kTimeoutMs);
-            shootermotor.config_kI(kPIDLoopIdx, kI, kTimeoutMs);
-            shootermotor.config_kD(kPIDLoopIdx, kD, kTimeoutMs);
+            shootermotor.config_kF(C.shooter.kPIDLoopIdx, C.shooter.kF, C.shooter.kTimeoutMs);
+            shootermotor.config_kP(C.shooter.kPIDLoopIdx, C.shooter.kP, C.shooter.kTimeoutMs);
+            shootermotor.config_kI(C.shooter.kPIDLoopIdx, C.shooter.kI, C.shooter.kTimeoutMs);
+            shootermotor.config_kD(C.shooter.kPIDLoopIdx, C.shooter.kD, C.shooter.kTimeoutMs);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+  public void shooterStop(){
+    shootermotor.set(ControlMode.PercentOutput,0);
+  }
+  public void setShootLow(){
+    shootermotor.set(ControlMode.Velocity,C.shooter.lowGoal);
+    
+
   }
 }
