@@ -75,6 +75,15 @@ public final class C {
         public static final double lowGoal = -7500;
         public static final double highGoal = 12000;
     }
+    public static final class climber{
+        public static final int solenoidChannel = 2;
+    }
+    public static final class indexer{
+        public static final int motorChannel = 7;
+        public static final int sensorChannel = 0;
+        public static final Double motorSpeed = 0.5;
+
+    }
     
 
 }

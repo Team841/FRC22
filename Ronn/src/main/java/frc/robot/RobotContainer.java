@@ -24,6 +24,8 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Indexer;
 import frc.robot.C.*;
 
 /**
@@ -45,6 +47,10 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
 
   private final Shooter m_shooter = new Shooter();
+
+  private final Climber m_climber = new Climber();
+
+  private final Indexer m_indexer = new Indexer();
 
   private final Joystick m_driverCtrlLeft = new Joystick(C.OI.driverPortLeft);
  
@@ -96,6 +102,10 @@ public class RobotContainer {
     final JoystickButton Shoot = new JoystickButton(m_codriverCtrl, C.OI.kRT);
     Shoot.whenPressed(new InstantCommand(m_shooter::setShootLow, m_shooter));
     Shoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    //Climb
+    final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kRB);
+    Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
+    Climb.whenPressed(new InstantCommand(m_climber::extend, m_climber));
    
 
 
