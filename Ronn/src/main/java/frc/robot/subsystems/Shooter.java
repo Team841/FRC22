@@ -9,12 +9,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import frc.robot.C;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private final TalonFX shootermotor = new TalonFX(C.shooter.shooterChannel);
+  private final TalonFX feedermotor = new TalonFX(C.shooter.feederChannel);
 
 
   public Shooter() {
@@ -37,13 +38,26 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (getVelocity()>(C.shooter.lowGoal * C.shooter.percentThreshHold)){
+      feedermotor.set(ControlMode.PercentOutput,C.shooter.feederPower);
+
+    }
+    else {
+      feedermotor.set(ControlMode.PercentOutput,0);
+    }
+    SmartDashboard.putNumber("shooter speed", getVelocity());
   }
   public void shooterStop(){
     shootermotor.set(ControlMode.PercentOutput,0);
   }
   public void setShootLow(){
-    shootermotor.set(ControlMode.Velocity,C.shooter.lowGoal);
+    shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
     
 
+  }
+  public double getVelocity(){
+    double value ;
+    value = shootermotor.getSelectedSensorVelocity();
+    return Math.abs(value);
   }
 }

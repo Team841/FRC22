@@ -65,15 +65,18 @@ public final class C {
     }
     public static final class shooter{
         public static final int shooterChannel = 8;
-        public static final double kF = 0.04;
-        public static final double kP = 0.01;
+        public static final double kF = 0.05;
+        public static final double kP = 0.05;
         public static final double kI = 0;
         public static final double kD = 0;
         public static final int kTimeoutMs = 30;
         public static final int kPIDLoopIdx = 0;
         public static final double deadband = 0.001;
-        public static final double lowGoal = -7500;
+        public static final double lowGoal = 6800;
         public static final double highGoal = 12000;
+        public static final int feederChannel = 6;
+        public static final double feederPower = 0.5;
+        public static final double percentThreshHold = 0.7;
     }
     public static final class climber{
         public static final int solenoidChannel = 2;
