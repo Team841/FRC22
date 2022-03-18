@@ -12,6 +12,7 @@ import frc.robot.commands.Auto1Ball;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -68,7 +69,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     
-    chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain));
+    chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
     chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
     chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
     SmartDashboard.putData("Auto mode", chooser);
@@ -118,7 +119,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    //Command m_command = new Auto1OffTarmac(m_driveTrain);
+    Command m_command = new Auto1OffTarmac(m_Drivetrain, m_shooter);
      return chooser.getSelected(); 
      
 

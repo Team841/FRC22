@@ -34,7 +34,7 @@ public final class C {
         public static final int chezydrive = 2;
 
         //Drive. We can change this.
-        public static int drivestyle = tankdrive;
+        public static int drivestyle = chezydrive;
 
         
         //Physical setup of the drive
@@ -57,10 +57,10 @@ public final class C {
     }
     public static final class intake{
         public static final int motorChannel = 5;
-        public static final double rollerInPower = 0.2;
-        public static final double rolleroutPower = -0.2;
+        public static final double rollerInPower = -0.5;
+        public static final double rolleroutPower = 0.2;
         public static final int solenoidModule = 0;
-        public static final int solenoidChannel = 1;
+        public static final int solenoidChannel = 8;
 
     }
     public static final class shooter{
@@ -76,7 +76,7 @@ public final class C {
         public static final double highGoal = 12000;
         public static final int feederChannel = 6;
         public static final double feederPower = 0.5;
-        public static final double percentThreshHold = 0.7;
+        public static final double percentThreshHold = 0.9;
     }
     public static final class climber{
         public static final int solenoidChannel = 2;

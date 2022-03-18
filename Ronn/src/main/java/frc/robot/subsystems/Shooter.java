@@ -22,12 +22,13 @@ public class Shooter extends SubsystemBase {
     shootermotor.configFactoryDefault();
     shootermotor.configNeutralDeadband(C.shooter.deadband);
     shootermotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
-    		/* Config the peak and nominal outputs */
+
+    		
+    /* Config the peak and nominal outputs */
         shootermotor.configNominalOutputForward(0, C.shooter.kTimeoutMs);
         shootermotor.configNominalOutputReverse(0,C.shooter.kTimeoutMs);
         shootermotor.configPeakOutputForward(1,C.shooter.kTimeoutMs);
         shootermotor.configPeakOutputReverse(-1,C.shooter.kTimeoutMs);
-
         		/* Config the Velocity closed loop gains in slot0 */
             shootermotor.config_kF(C.shooter.kPIDLoopIdx, C.shooter.kF, C.shooter.kTimeoutMs);
             shootermotor.config_kP(C.shooter.kPIDLoopIdx, C.shooter.kP, C.shooter.kTimeoutMs);
@@ -60,4 +61,5 @@ public class Shooter extends SubsystemBase {
     value = shootermotor.getSelectedSensorVelocity();
     return Math.abs(value);
   }
+  
 }
