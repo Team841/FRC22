@@ -99,15 +99,19 @@ public class RobotContainer {
     final JoystickButton cG = new JoystickButton(m_codriverCtrl, C.OI.kLT);
     cG.whenPressed(new IntakeCargo(m_intake));
     cG.whenReleased(new RetractIntake(m_intake));
-    //Shoot
-    final JoystickButton Shoot = new JoystickButton(m_codriverCtrl, C.OI.kRT);
-    Shoot.whenPressed(new InstantCommand(m_shooter::setShootLow, m_shooter));
-    Shoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    //LowShoot
+    final JoystickButton LowShoot = new JoystickButton(m_codriverCtrl, C.OI.kRT);
+    LowShoot.whenPressed(new InstantCommand(m_shooter::setShootLow, m_shooter));
+    LowShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    //HighShoot
+    final JoystickButton HighShoot = new JoystickButton(m_codriverCtrl, C.OI.kRB);
+    HighShoot.whenPressed(new InstantCommand(m_shooter::setShootHigh, m_shooter));
+    HighShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
     //Climb
-    final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kRB);
+    final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
     Climb.whenPressed(new InstantCommand(m_climber::extend, m_climber));
-   
+    
 
 
   }

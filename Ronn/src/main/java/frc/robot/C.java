@@ -35,6 +35,7 @@ public final class C {
 
         //Drive. We can change this.
         public static int drivestyle = chezydrive;
+        public static int invert = -1;
 
         
         //Physical setup of the drive
@@ -79,7 +80,7 @@ public final class C {
         public static final double percentThreshHold = 0.9;
     }
     public static final class climber{
-        public static final int solenoidChannel = 2;
+        public static final int solenoidChannel = 14;
     }
     public static final class indexer{
         public static final int motorChannel = 7;

@@ -376,7 +376,7 @@ public class Drivetrain extends SubsystemBase {
       }
   
       //set the motors
-      SetLeftRight(leftY,rightY);
+      SetLeftRight(leftY * C.Drive.invert,rightY*C.Drive.invert);
   
 }
   

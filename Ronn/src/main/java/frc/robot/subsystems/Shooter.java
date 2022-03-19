@@ -53,6 +53,10 @@ public class Shooter extends SubsystemBase {
   }
   public void setShootLow(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
+  }
+  
+    public void setShootHigh(){
+      shootermotor.set(ControlMode.Velocity,-C.shooter.highGoal);
     
 
   }

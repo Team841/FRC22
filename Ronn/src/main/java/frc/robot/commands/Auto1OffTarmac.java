@@ -16,7 +16,8 @@ public class Auto1OffTarmac extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new Shoot(m_Shooter).withTimeout(1), 
-    new ShooterStop(m_Shooter),
-    new SetDriveStraightPower((m_Drivetrain),0.3).withTimeout(1.5));
+    new ShooterStop(m_Shooter).withTimeout(.1),
+    new SetDriveStraightPower((m_Drivetrain),-0.3).withTimeout(1.5)
+    );
   }
 }
