@@ -71,7 +71,6 @@ public class RobotContainer {
     
     chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
     chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
-    chooser.addOption("Auto1Ball", new Auto1Ball(m_Drivetrain));
     SmartDashboard.putData("Auto mode", chooser);
 
     // Configure the button bindings
