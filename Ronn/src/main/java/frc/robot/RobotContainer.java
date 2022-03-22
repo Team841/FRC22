@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto1OffTarmac;
-import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoDriveOff;
 import frc.robot.commands.Auto1Ball;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
@@ -70,7 +70,7 @@ public class RobotContainer {
 
     
     chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
-    chooser.addOption("AutoDrive", new AutoDrive(m_Drivetrain));
+    chooser.addOption("AutoDriveOff", new AutoDriveOff(m_Drivetrain));
     SmartDashboard.putData("Auto mode", chooser);
 
     // Configure the button bindings
@@ -94,6 +94,12 @@ public class RobotContainer {
     final JoystickButton qT = new JoystickButton(m_driverCtrlLeft, C.OI.kRB);
     qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
     qT.whenReleased(new InstantCommand(m_Drivetrain::resetQuickTurn, m_Drivetrain));
+    //SLOW MODE
+    final JoystickButton sM = new JoystickButton(m_driverCtrlLeft, C.OI.kLB);
+    sM.whenPressed(new InstantCommand(m_Drivetrain::slowModeEnable, m_Drivetrain));
+    sM.whenReleased(new InstantCommand(m_Drivetrain::slowModeDisable, m_Drivetrain));
+
+    //CODRIVER
     //Cargo button
     final JoystickButton cG = new JoystickButton(m_codriverCtrl, C.OI.kLT);
     cG.whenPressed(new IntakeCargo(m_intake));
@@ -110,6 +116,8 @@ public class RobotContainer {
     final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
     Climb.whenPressed(new InstantCommand(m_climber::extend, m_climber));
+
+    
     
 
 

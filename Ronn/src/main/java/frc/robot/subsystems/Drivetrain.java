@@ -108,6 +108,7 @@ public class Drivetrain extends SubsystemBase {
   private double oldWheel = 0.0; //accumulator to handle inertia
   private double quickStopAccumulator = 0; 
   private boolean isQuickTurn = false;
+  private boolean slowMode = false;
   
       public void setQuickTurn() {
           isQuickTurn = true;
@@ -247,10 +248,23 @@ public class Drivetrain extends SubsystemBase {
        * @return yAxis
        */
       public void SetLeftRight(double LPower, double RPower) {
-          right1.set(ControlMode.PercentOutput,RPower * 1);
+          double _LPower, _RPower;
+          if (slowMode)
+          {
+            _LPower = C.Drive.slowModeScaleFactor*LPower;
+            _RPower = C.Drive.slowModeScaleFactor*RPower;
+
+          }
+          else{
+            _LPower = LPower;
+            _RPower = RPower;
+
+          }
+
+          right1.set(ControlMode.PercentOutput,_RPower * 1);
           //right2.set(RPower); 
           //right3.set(RPower);
-          left1.set(ControlMode.PercentOutput,LPower * 1);
+          left1.set(ControlMode.PercentOutput,_LPower * 1);
           //left2.set(LPower);
           //left3.set(LPower);
   
@@ -379,8 +393,14 @@ public class Drivetrain extends SubsystemBase {
       SetLeftRight(leftY * C.Drive.invert,rightY*C.Drive.invert);
   
 }
-  
-  
+  public void slowModeEnable(){
+slowMode = true;
 
+
+  }
+  public void slowModeDisable(){
+
+  slowMode = false; 
+  }
       
   }

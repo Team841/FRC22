@@ -37,6 +37,8 @@ public final class C {
         public static int drivestyle = chezydrive;
         public static int invert = -1;
 
+        public static double slowModeScaleFactor = 0.1875;
+
         
         //Physical setup of the drive
 
@@ -74,7 +76,7 @@ public final class C {
         public static final int kPIDLoopIdx = 0;
         public static final double deadband = 0.001;
         public static final double lowGoal = 6800;
-        public static final double highGoal = 12000;
+        public static final double highGoal = 15000;
         public static final int feederChannel = 6;
         public static final double feederPower = 0.5;
         public static final double percentThreshHold = 0.9;
