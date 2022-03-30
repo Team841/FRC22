@@ -12,6 +12,11 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.C;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
@@ -19,6 +24,8 @@ public class Drivetrain extends SubsystemBase {
     private final TalonFX left2 = new TalonFX(C.CANid.driveLeft2);
     private final TalonFX right1 = new TalonFX(C.CANid.driveRight1);
     private final TalonFX right2 = new TalonFX(C.CANid.driveRight2);
+    private final NetworkTable goalTable = NetworkTableInstance.getDefault().getTable("limelight-goal");
+    private final NetworkTable ballTable = NetworkTableInstance.getDefault().getTable("limelight-balls");
 
     public Drivetrain() {
 
@@ -44,12 +51,57 @@ public class Drivetrain extends SubsystemBase {
   
   }
   
-  
+  public void limeLightUpdates(){
+      NetworkTableEntry tx = goalTable.getEntry("tx");
+      NetworkTableEntry ty = goalTable.getEntry("ty");
+      NetworkTableEntry tv = goalTable.getEntry ("tv");
+
+      double x = tx.getDouble(0.0);
+      double y = ty.getDouble(0.0);
+      double valid = tv.getDouble(0.0);
+
+      SmartDashboard.putNumber("RungX",x);
+      SmartDashboard.putNumber("RungY",y);
+      SmartDashboard.putNumber("RungValid", valid);
+
+
+      //Blue
+      ballTable.getEntry("pipeline").setNumber(0);
+      NetworkTableEntry b_btx = ballTable.getEntry("tx");
+      NetworkTableEntry b_bty = ballTable.getEntry("ty");
+      NetworkTableEntry b_btv = ballTable.getEntry ("tv");
+
+      double b_bx = b_btx.getDouble(0.0);
+      double b_by = b_bty.getDouble(0.0);
+      double b_bvalid = b_btv.getDouble(0.0);
+
+      SmartDashboard.putNumber("BlueBallX",b_bx);
+      SmartDashboard.putNumber("BlueBallY",b_by);
+      SmartDashboard.putNumber("BlueBallValid", b_bvalid);
+
+      //Red
+      //ballTable.getEntry("pipeline").setNumber(1);
+      //NetworkTableEntry r_btx = ballTable.getEntry("tx");
+      //NetworkTableEntry r_bty = ballTable.getEntry("ty");
+     // NetworkTableEntry r_btv = ballTable.getEntry ("tv");
+
+      //double r_bx = r_btx.getDouble(0.0);
+      //double r_by = r_bty.getDouble(0.0);
+      //double r_bvalid = r_btv.getDouble(0.0);
+
+      //SmartDashboard.putNumber("RedBallX",r_bx);
+      //SmartDashboard.putNumber("RedBallY",r_by);
+      //SmartDashboard.putNumber("RedBallValid", r_bvalid);
+
+
+
+
+  }
       @Override
       public void periodic() {
           // Put code here to be run every loop: vision updates, odometry updates, etc
           // Normal drive code doesn't go here, drive is a method below
-       
+        limeLightUpdates();
               
       
               // Update values of the table
@@ -314,6 +366,7 @@ public class Drivetrain extends SubsystemBase {
           //Default if input is invalid.
           cheesyDrive(stickLeft);
         }
+        limeLightUpdates();
     
       }
   

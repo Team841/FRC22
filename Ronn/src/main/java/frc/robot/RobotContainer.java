@@ -116,6 +116,11 @@ public class RobotContainer {
     final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
     Climb.whenPressed(new InstantCommand(m_climber::extend, m_climber));
+    //FeederIn
+    final JoystickButton FeederOn = new JoystickButton(m_codriverCtrl, C.OI.kA);
+    FeederOn.whenPressed(new InstantCommand(m_shooter::feederOn, m_shooter));
+    FeederOn.whenReleased(new InstantCommand(m_shooter::feederOff, m_shooter));
+
 
     
     
