@@ -27,6 +27,8 @@ public class Drivetrain extends SubsystemBase {
     private final NetworkTable goalTable = NetworkTableInstance.getDefault().getTable("limelight-goal");
     private final NetworkTable ballTable = NetworkTableInstance.getDefault().getTable("limelight-balls");
 
+    private int camCounter = 0;
+
     public Drivetrain() {
 
       //table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -64,8 +66,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("RungY",y);
       SmartDashboard.putNumber("RungValid", valid);
 
-
-      //Blue
+        if(camCounter <= 45)
+        {
+        //Blue
       ballTable.getEntry("pipeline").setNumber(0);
       NetworkTableEntry b_btx = ballTable.getEntry("tx");
       NetworkTableEntry b_bty = ballTable.getEntry("ty");
@@ -78,23 +81,36 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("BlueBallX",b_bx);
       SmartDashboard.putNumber("BlueBallY",b_by);
       SmartDashboard.putNumber("BlueBallValid", b_bvalid);
+        }else if(camCounter >= 46 & camCounter <= 55 ){
+            //Do not use 
+            ballTable.getEntry("pipeline").setNumber(1);
+        }else if(camCounter >= 56 & camCounter <= 95){
+        //Red
+      ballTable.getEntry("pipeline").setNumber(1);
+      NetworkTableEntry r_btx = ballTable.getEntry("tx");
+      NetworkTableEntry r_bty = ballTable.getEntry("ty");
+        NetworkTableEntry r_btv = ballTable.getEntry ("tv");
 
-      //Red
-      //ballTable.getEntry("pipeline").setNumber(1);
-      //NetworkTableEntry r_btx = ballTable.getEntry("tx");
-      //NetworkTableEntry r_bty = ballTable.getEntry("ty");
-     // NetworkTableEntry r_btv = ballTable.getEntry ("tv");
+      double r_bx = r_btx.getDouble(0.0);
+      double r_by = r_bty.getDouble(0.0);
+      double r_bvalid = r_btv.getDouble(0.0);
 
-      //double r_bx = r_btx.getDouble(0.0);
-      //double r_by = r_bty.getDouble(0.0);
-      //double r_bvalid = r_btv.getDouble(0.0);
+      SmartDashboard.putNumber("RedBallX",r_bx);
+      SmartDashboard.putNumber("RedBallY",r_by);
+      SmartDashboard.putNumber("RedBallValid", r_bvalid);
+        }else{
+            ballTable.getEntry("pipeline").setNumber(0);
+        }
+      
 
-      //SmartDashboard.putNumber("RedBallX",r_bx);
-      //SmartDashboard.putNumber("RedBallY",r_by);
-      //SmartDashboard.putNumber("RedBallValid", r_bvalid);
+     
 
 
-
+        camCounter = camCounter + 1;
+    if(camCounter >= 100)
+    {
+        camCounter = 0;
+    }
 
   }
       @Override

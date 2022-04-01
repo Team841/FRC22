@@ -44,7 +44,7 @@ public class Shooter extends SubsystemBase {
 
     }
     else {
-      feedermotor.set(ControlMode.PercentOutput,0);
+      //feedermotor.set(ControlMode.PercentOutput,0);
     }
     SmartDashboard.putNumber("shooter speed", getVelocity());
   }
