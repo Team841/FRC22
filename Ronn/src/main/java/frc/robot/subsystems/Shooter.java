@@ -82,12 +82,12 @@ public class Shooter extends SubsystemBase {
   }
   public void setShootLow(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
-    currentGoal = -C.shooter.lowGoal;
+    currentGoal = C.shooter.lowGoal;
   }
   
     public void setShootHigh(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.highGoal);
-    currentGoal = -C.shooter.highGoal;
+    currentGoal = C.shooter.highGoal;
   }
 
   public void feederOn(){

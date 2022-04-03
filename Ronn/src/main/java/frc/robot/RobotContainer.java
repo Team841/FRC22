@@ -26,7 +26,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Indexer;
+//import frc.robot.subsystems.Indexer;
 import frc.robot.C.*;
 
 /**
@@ -51,7 +51,7 @@ public class RobotContainer {
 
   private final Climber m_climber = new Climber();
 
-  private final Indexer m_indexer = new Indexer();
+  //private final Indexer m_indexer = new Indexer();
 
   private final Joystick m_driverCtrlLeft = new Joystick(C.OI.driverPortLeft);
  
@@ -95,7 +95,7 @@ public class RobotContainer {
     qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
     qT.whenReleased(new InstantCommand(m_Drivetrain::resetQuickTurn, m_Drivetrain));
     //SLOW MODE
-    final JoystickButton sM = new JoystickButton(m_driverCtrlLeft, C.OI.kLB);
+    final JoystickButton sM = new JoystickButton(m_driverCtrlLeft, C.OI.kLT);
     sM.whenPressed(new InstantCommand(m_Drivetrain::slowModeEnable, m_Drivetrain));
     sM.whenReleased(new InstantCommand(m_Drivetrain::slowModeDisable, m_Drivetrain));
 
@@ -117,9 +117,13 @@ public class RobotContainer {
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
     Climb.whenPressed(new InstantCommand(m_climber::extend, m_climber));
     //FeederIn
-    final JoystickButton FeederOn = new JoystickButton(m_codriverCtrl, C.OI.kA);
-    FeederOn.whenPressed(new InstantCommand(m_shooter::feederOn, m_shooter));
-    FeederOn.whenReleased(new InstantCommand(m_shooter::feederOff, m_shooter));
+   // final JoystickButton FeederOn = new JoystickButton(m_codriverCtrl, C.OI.kA);
+    //FeederOn.whenPressed(new InstantCommand(m_shooter::feederOn, m_shooter));
+    //FeederOn.whenReleased(new InstantCommand(m_shooter::feederOff, m_shooter));
+    //StorageSpitOut
+    final JoystickButton StorageSpitOut = new JoystickButton(m_codriverCtrl, C.OI.kX);
+    StorageSpitOut.whenPressed(new InstantCommand(m_intake::rollerMotorOut, m_intake));
+    StorageSpitOut.whenReleased(new InstantCommand(m_intake :: rollerStop, m_intake));
 
 
     

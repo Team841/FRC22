@@ -16,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 
 public class Drivetrain extends SubsystemBase {
@@ -34,9 +35,13 @@ public class Drivetrain extends SubsystemBase {
       //table = NetworkTableInstance.getDefault().getTable("limelight");
       //Controller housekeeping in the constructor
       left1.configFactoryDefault();
+      left1.setNeutralMode(NeutralMode.Coast);
       right1.configFactoryDefault();
+      right1.setNeutralMode(NeutralMode.Coast);
       left2.configFactoryDefault();
+      left2.setNeutralMode(NeutralMode.Coast);
       right2.configFactoryDefault();
+      right2.setNeutralMode(NeutralMode.Coast);
       left1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
       left2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
       right1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));

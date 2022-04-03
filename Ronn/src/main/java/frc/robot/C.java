@@ -37,7 +37,7 @@ public final class C {
         public static int drivestyle = chezydrive;
         public static int invert = -1;
 
-        public static double slowModeScaleFactor = 0.1875;
+        public static double slowModeScaleFactor = 0.25;
 
         
         //Physical setup of the drive
