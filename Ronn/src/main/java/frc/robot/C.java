@@ -79,17 +79,19 @@ public final class C {
         public static final double highGoal = 15000;
         public static final int feederChannel = 6;
         public static final double feederPower = 0.5;
+        public static final int feederSensorChannel = 0;
         public static final double percentThreshHold = 0.9;
+        public static final int indexerMotorChannel = 7;
+        public static final int indexerSensorChannel = 1;
+        public static final Double motorSpeed = 0.5;
+
     }
     public static final class climber{
         public static final int solenoidChannel = 14;
     }
-    public static final class indexer{
-        public static final int motorChannel = 7;
-        public static final int sensorChannel = 0;
-        public static final Double motorSpeed = 0.5;
 
-    }
+
+    
     
 
 }

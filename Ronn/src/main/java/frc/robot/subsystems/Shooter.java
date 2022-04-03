@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import frc.robot.C;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -16,6 +17,9 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private final TalonFX shootermotor = new TalonFX(C.shooter.shooterChannel);
   private final TalonFX feedermotor = new TalonFX(C.shooter.feederChannel);
+  private final TalonFX indexermotor = new TalonFX(C.shooter.indexerMotorChannel);
+  private final DigitalInput feedersensor = new DigitalInput(C.shooter.feederSensorChannel);
+  private final DigitalInput indexersensor = new DigitalInput(C.shooter.indexerSensorChannel);
 
 
   public Shooter() {
