@@ -21,6 +21,7 @@ public class Shooter extends SubsystemBase {
   private final TalonFX indexermotor = new TalonFX(C.shooter.indexerMotorChannel);
   private final DigitalInput feedersensor = new DigitalInput(C.shooter.feederSensorChannel);
   private final DigitalInput indexersensor = new DigitalInput(C.shooter.indexerSensorChannel);
+  private double currentGoal = C.shooter.lowGoal;
 
 
   public Shooter() {
@@ -47,7 +48,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (getVelocity()>(C.shooter.lowGoal * C.shooter.percentThreshHold)){
+    if (getVelocity()>(currentGoal * C.shooter.percentThreshHold)){
       feedermotor.set(ControlMode.PercentOutput,C.shooter.feederPower);
       indexermotor.set(ControlMode.PercentOutput,C.shooter.indexerPower);
 
@@ -81,10 +82,12 @@ public class Shooter extends SubsystemBase {
   }
   public void setShootLow(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
+    currentGoal = -C.shooter.lowGoal;
   }
   
     public void setShootHigh(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.highGoal);
+    currentGoal = -C.shooter.highGoal;
   }
 
   public void feederOn(){
