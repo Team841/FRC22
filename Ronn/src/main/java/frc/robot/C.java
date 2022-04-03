@@ -83,7 +83,7 @@ public final class C {
         public static final double percentThreshHold = 0.9;
         public static final int indexerMotorChannel = 7;
         public static final int indexerSensorChannel = 1;
-        public static final Double motorSpeed = 0.5;
+        public static final Double indexerPower = -0.5;
 
     }
     public static final class climber{

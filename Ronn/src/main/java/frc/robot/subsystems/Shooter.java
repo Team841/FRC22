@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import frc.robot.C;
@@ -26,6 +27,9 @@ public class Shooter extends SubsystemBase {
     shootermotor.configFactoryDefault();
     shootermotor.configNeutralDeadband(C.shooter.deadband);
     shootermotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
+    indexermotor.configFactoryDefault();
+    feedermotor.configFactoryDefault();
+    feedermotor.setNeutralMode(NeutralMode.Brake);
 
     		
     /* Config the peak and nominal outputs */
@@ -45,12 +49,32 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     if (getVelocity()>(C.shooter.lowGoal * C.shooter.percentThreshHold)){
       feedermotor.set(ControlMode.PercentOutput,C.shooter.feederPower);
+      indexermotor.set(ControlMode.PercentOutput,C.shooter.indexerPower);
 
     }
     else {
+      if (isCargoPresentAtFeeder() == false  & isCargoPresentAtIndexer() == false){
+        feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower);
+        indexermotor.set(ControlMode.PercentOutput, C.shooter.indexerPower);
+
+      }
+      else if (isCargoPresentAtFeeder() == false  & isCargoPresentAtIndexer() == true){
+        feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower);
+        indexermotor.set(ControlMode.PercentOutput, C.shooter.indexerPower);
+      }
+      else if (isCargoPresentAtFeeder() == true  & isCargoPresentAtIndexer() == false){
+        feedermotor.set(ControlMode.PercentOutput, 0);
+        indexermotor.set(ControlMode.PercentOutput, C.shooter.indexerPower);
+      }
+      else if (isCargoPresentAtFeeder() == true  & isCargoPresentAtIndexer() == true){
+        feedermotor.set(ControlMode.PercentOutput, 0);
+        indexermotor.set(ControlMode.PercentOutput, 0);
       //feedermotor.set(ControlMode.PercentOutput,0);
+
+      }
     }
     SmartDashboard.putNumber("shooter speed", getVelocity());
+  
   }
   public void shooterStop(){
     shootermotor.set(ControlMode.PercentOutput,0);
@@ -73,6 +97,14 @@ public class Shooter extends SubsystemBase {
     double value ;
     value = shootermotor.getSelectedSensorVelocity();
     return Math.abs(value);
+  }
+  public boolean isCargoPresentAtFeeder(){
+
+    return !feedersensor.get();
+  }
+  public boolean isCargoPresentAtIndexer(){
+
+    return !indexersensor.get();
   }
   
 }
