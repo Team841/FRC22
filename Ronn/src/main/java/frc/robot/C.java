@@ -56,7 +56,10 @@ public final class C {
         public static final double tolerance = 10;
         public static final double LEDon = 3;
         public static final double LEDoff = 1;
-        
+        public static final double goalTargetDistance = 16.4;
+        public static final double goalTolerance = 1;
+        public static final double centerTolerance = 1;
+
     }
     public static final class intake{
         public static final int motorChannel = 5;
@@ -75,7 +78,7 @@ public final class C {
         public static final int kTimeoutMs = 30;
         public static final int kPIDLoopIdx = 0;
         public static final double deadband = 0.001;
-        public static final double lowGoal = 6800;
+        public static final double lowGoal = 7100;// Previous speed : 6800
         public static final double highGoal = 15000;
         public static final int feederChannel = 6;
         public static final double feederPower = 0.5;
@@ -84,6 +87,8 @@ public final class C {
         public static final int indexerMotorChannel = 7;
         public static final int indexerSensorChannel = 1;
         public static final Double indexerPower = -0.5;
+        public static final int intakeSensorChannel = 2;
+        public static final int maxCount = 50; //20 * 50 = 1000 or 1 second
 
     }
     public static final class climber{

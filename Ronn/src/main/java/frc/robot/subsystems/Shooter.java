@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import frc.robot.C;
@@ -22,6 +24,7 @@ public class Shooter extends SubsystemBase {
   private final DigitalInput feedersensor = new DigitalInput(C.shooter.feederSensorChannel);
   private final DigitalInput indexersensor = new DigitalInput(C.shooter.indexerSensorChannel);
   private double currentGoal = C.shooter.lowGoal;
+  private boolean DisableFD = false;
 
 
   public Shooter() {
@@ -31,8 +34,39 @@ public class Shooter extends SubsystemBase {
     indexermotor.configFactoryDefault();
     feedermotor.configFactoryDefault();
     feedermotor.setNeutralMode(NeutralMode.Brake);
+    //
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_1_General,20);
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+    shootermotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20); //Shooter Motor uses this, set to 20
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+    shootermotor.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+  
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_1_General,20);
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+    indexermotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255); 
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+    indexermotor.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
 
-    		
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_1_General,20);
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+    feedermotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255); 
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+    feedermotor.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+
+
+
     /* Config the peak and nominal outputs */
         shootermotor.configNominalOutputForward(0, C.shooter.kTimeoutMs);
         shootermotor.configNominalOutputReverse(0,C.shooter.kTimeoutMs);
@@ -47,6 +81,8 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if (!DisableFD){
     // This method will be called once per scheduler run
     if (getVelocity()>(currentGoal * C.shooter.percentThreshHold)){
       feedermotor.set(ControlMode.PercentOutput,C.shooter.feederPower);
@@ -73,9 +109,14 @@ public class Shooter extends SubsystemBase {
       //feedermotor.set(ControlMode.PercentOutput,0);
 
       }
+
     }
-    SmartDashboard.putNumber("shooter speed", getVelocity());
-  
+    //SmartDashboard.putNumber("shooter speed", getVelocity());
+    }
+    else {
+      setIndexerPower(0);
+      setFeederPower(0);
+    }
   }
   public void shooterStop(){
     shootermotor.set(ControlMode.PercentOutput,0);
@@ -109,5 +150,17 @@ public class Shooter extends SubsystemBase {
 
     return !indexersensor.get();
   }
-  
+  public void setIndexerPower(double power){
+
+indexermotor.set(ControlMode.PercentOutput, power);
+  }
+  public void setFeederPower(double power){
+    feedermotor.set(ControlMode.PercentOutput, power);
+  }
+  public void disableFeederIndexer(){
+    DisableFD = true;
+  }
+public void enableFeederIndexer(){
+  DisableFD = false;
+}
 }

@@ -7,12 +7,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto1OffTarmac;
+import frc.robot.commands.Auto1OffTarmacHigh;
+import frc.robot.commands.Auto2BallOffTarmacHigh;
 import frc.robot.commands.AutoDriveOff;
+import frc.robot.commands.DisableFeederIndexer;
+import frc.robot.commands.DriveTowardsGoal;
 import frc.robot.commands.Auto1Ball;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.RetractIntake;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootLow;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -71,6 +75,8 @@ public class RobotContainer {
     
     chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
     chooser.addOption("AutoDriveOff", new AutoDriveOff(m_Drivetrain));
+    chooser.addOption("Auto1OffTarmacHigh", new Auto1OffTarmacHigh(m_Drivetrain, m_shooter));
+    chooser.addOption("Auto2BallOffTarmacHigh", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
     SmartDashboard.putData("Auto mode", chooser);
 
     // Configure the button bindings
@@ -90,16 +96,25 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //DRIVER
+    //Auto Align
+    final JoystickButton AutoAlign = new JoystickButton(m_driverCtrlLeft, C.OI.kA);
+    AutoAlign.whileHeld(new DriveTowardsGoal(m_Drivetrain));
     //Quick turn
     final JoystickButton qT = new JoystickButton(m_driverCtrlLeft, C.OI.kRB);
     qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
     qT.whenReleased(new InstantCommand(m_Drivetrain::resetQuickTurn, m_Drivetrain));
-    //SLOW MODE
-    final JoystickButton sM = new JoystickButton(m_driverCtrlLeft, C.OI.kLT);
-    sM.whenPressed(new InstantCommand(m_Drivetrain::slowModeEnable, m_Drivetrain));
-    sM.whenReleased(new InstantCommand(m_Drivetrain::slowModeDisable, m_Drivetrain));
+    //SLOW MODE:Climb
+    final JoystickButton sMC = new JoystickButton(m_driverCtrlLeft, C.OI.kLT);
+    sMC.whenPressed(new InstantCommand(m_Drivetrain::slowModeEnable, m_Drivetrain));
+    sMC.whenReleased(new InstantCommand(m_Drivetrain::slowModeDisable, m_Drivetrain));
+    //SLOW MODE:Field
+    //final JoystickButton sMF = new JoystickButton(m_driverCtrlLeft, C.OI.kLT);
+    //sMF.whenPressed(new InstantCommand(m_Drivetrain::slowModeEnable, m_Drivetrain));
+    //sMF.whenReleased(new InstantCommand(m_Drivetrain::slowModeDisable, m_Drivetrain));
+
 
     //CODRIVER
+    
     //Cargo button
     final JoystickButton cG = new JoystickButton(m_codriverCtrl, C.OI.kLT);
     cG.whenPressed(new IntakeCargo(m_intake));
@@ -116,12 +131,18 @@ public class RobotContainer {
     final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
     Climb.whenPressed(new InstantCommand(m_climber::extend, m_climber));
+    
+    //Disable Feeder and Indexer
+    final JoystickButton DisableFD = new JoystickButton(m_codriverCtrl, C.OI.kX);
+    DisableFD.whenPressed(new InstantCommand(m_shooter::disableFeederIndexer, m_shooter));
+    DisableFD.whenReleased(new InstantCommand(m_shooter::enableFeederIndexer,m_shooter));
     //FeederIn
    // final JoystickButton FeederOn = new JoystickButton(m_codriverCtrl, C.OI.kA);
     //FeederOn.whenPressed(new InstantCommand(m_shooter::feederOn, m_shooter));
     //FeederOn.whenReleased(new InstantCommand(m_shooter::feederOff, m_shooter));
+
     //StorageSpitOut
-    final JoystickButton StorageSpitOut = new JoystickButton(m_codriverCtrl, C.OI.kX);
+    final JoystickButton StorageSpitOut = new JoystickButton(m_codriverCtrl, C.OI.kA);
     StorageSpitOut.whenPressed(new InstantCommand(m_intake::rollerMotorOut, m_intake));
     StorageSpitOut.whenReleased(new InstantCommand(m_intake :: rollerStop, m_intake));
 

@@ -18,7 +18,7 @@ public class Auto1OffIntake extends SequentialCommandGroup {
   public Auto1OffIntake(Drivetrain m_Drivetrain,Shooter m_Shooter, Intake m_Intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    super(new Shoot(m_Shooter).withTimeout(1), 
+    super(new ShootLow(m_Shooter).withTimeout(1), 
     new ShooterStop(m_Shooter).withTimeout(.1),
     new ParallelCommandGroup(
      new SetDriveStraightPower((m_Drivetrain),-0.3),

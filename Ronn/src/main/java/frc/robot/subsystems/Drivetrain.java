@@ -17,6 +17,9 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+
 
 
 public class Drivetrain extends SubsystemBase {
@@ -27,6 +30,9 @@ public class Drivetrain extends SubsystemBase {
     private final TalonFX right2 = new TalonFX(C.CANid.driveRight2);
     private final NetworkTable goalTable = NetworkTableInstance.getDefault().getTable("limelight-goal");
     private final NetworkTable ballTable = NetworkTableInstance.getDefault().getTable("limelight-balls");
+    private double xCrosshair = 0;
+    private double yCrosshair = 0;
+    private double validGoal = 0;
 
     private int camCounter = 0;
 
@@ -46,7 +52,48 @@ public class Drivetrain extends SubsystemBase {
       left2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
       right1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
       right2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
+
+      left1.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+      left1.setStatusFramePeriod(StatusFrame.Status_1_General,40);
+      left1.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+      left1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255); 
+      left1.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+      left1.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+      left1.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+      left1.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+      left1.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+
+      left2.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+      left2.setStatusFramePeriod(StatusFrame.Status_1_General,40);
+      left2.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+      left2.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255); 
+      left2.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+      left2.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+      left2.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+      left2.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+      left2.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+
+      right1.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+      right1.setStatusFramePeriod(StatusFrame.Status_1_General,40);
+      right1.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+      right1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255); 
+      right1.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+      right1.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+      right1.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+      right1.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+      right1.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+
+      right2.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+      right2.setStatusFramePeriod(StatusFrame.Status_1_General,40);
+      right2.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+      right2.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255); 
+      right2.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+      right2.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+      right2.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+      right2.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+      right2.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
   
+      
       //Set #2 controllers to follow #1 in both drives
       left2.follow(left1);
       right2.follow(right1);
@@ -66,7 +113,10 @@ public class Drivetrain extends SubsystemBase {
       double x = tx.getDouble(0.0);
       double y = ty.getDouble(0.0);
       double valid = tv.getDouble(0.0);
-
+        yCrosshair = y;
+        xCrosshair = x;
+        validGoal = valid;
+/*
       SmartDashboard.putNumber("RungX",x);
       SmartDashboard.putNumber("RungY",y);
       SmartDashboard.putNumber("RungValid", valid);
@@ -107,9 +157,8 @@ public class Drivetrain extends SubsystemBase {
             ballTable.getEntry("pipeline").setNumber(0);
         }
       
-
-     
-
+p
+     */
 
         camCounter = camCounter + 1;
     if(camCounter >= 100)
@@ -118,6 +167,21 @@ public class Drivetrain extends SubsystemBase {
     }
 
   }
+    public double getXCrosshair(){
+        return xCrosshair;
+    }
+
+    public double getYCrosshair(){
+        return yCrosshair;
+    }
+
+    public boolean isGoalPresent(){
+        if(validGoal > 0.5){
+            return true;
+        }else{
+            return false;
+        }
+    }
       @Override
       public void periodic() {
           // Put code here to be run every loop: vision updates, odometry updates, etc
