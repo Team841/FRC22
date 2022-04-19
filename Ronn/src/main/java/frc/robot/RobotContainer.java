@@ -13,6 +13,7 @@ import frc.robot.commands.AutoDriveOff;
 import frc.robot.commands.DisableFeederIndexer;
 import frc.robot.commands.DriveTowardsGoal;
 import frc.robot.commands.Auto1Ball;
+import frc.robot.commands.Auto1BallDefense;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.RetractIntake;
@@ -73,10 +74,12 @@ public class RobotContainer {
   public RobotContainer() {
 
     
-    chooser.setDefaultOption("Auto1OffTarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
-    chooser.addOption("AutoDriveOff", new AutoDriveOff(m_Drivetrain));
-    chooser.addOption("Auto1OffTarmacHigh", new Auto1OffTarmacHigh(m_Drivetrain, m_shooter));
-    chooser.addOption("Auto2BallOffTarmacHigh", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    //chooser.setDefaultOption("Shoots Low and Drive Off Tarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
+    chooser.setDefaultOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    chooser.addOption("Drive Off Tarmac", new AutoDriveOff(m_Drivetrain));
+    chooser.addOption("Shoots High and Drive Off Tarmac", new Auto1OffTarmacHigh(m_Drivetrain, m_shooter));
+    chooser.addOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    chooser.addOption("Score One Steal One", new Auto1BallDefense(m_shooter, m_Drivetrain, m_intake));
     SmartDashboard.putData("Auto mode", chooser);
 
     // Configure the button bindings
