@@ -26,6 +26,14 @@ public class Shooter extends SubsystemBase {
   private double currentGoal = C.shooter.lowGoal;
   private boolean DisableFD = false;
 
+  enum ShooterState{
+    OFF,
+    PULL_TO_FEEDER,
+    PASS_TO_INDEXER
+  }
+  private ShooterState presentShooterState = ShooterState.OFF;
+  private int TimerCounter = 0; 
+  private boolean expired = true; 
 
   public Shooter() {
     shootermotor.configFactoryDefault();
@@ -78,7 +86,7 @@ public class Shooter extends SubsystemBase {
             shootermotor.config_kI(C.shooter.kPIDLoopIdx, C.shooter.kI, C.shooter.kTimeoutMs);
             shootermotor.config_kD(C.shooter.kPIDLoopIdx, C.shooter.kD, C.shooter.kTimeoutMs);
   }
-
+/*
   @Override
   public void periodic() {
 
@@ -117,14 +125,72 @@ public class Shooter extends SubsystemBase {
       setIndexerPower(0);
       setFeederPower(0);
     }
+  }*/
+  @Override
+  public void periodic(){
+    ShooterState nextShooterState = presentShooterState;
+    switch (presentShooterState){
+      case OFF:
+        feedermotor.set(ControlMode.PercentOutput, 0); // off
+        indexermotor.set(ControlMode.PercentOutput, 0); // on
+        if(intakeDown()){
+          nextShooterState = ShooterState.PULL_TO_FEEDER;
+        }
+      break;
+      case PULL_TO_FEEDER: 
+        feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower); // on
+        indexermotor.set(ControlMode.PercentOutput, 0);  // off
+        if(isCargoPresentAtFeeder() & !isCargoPresentAtIndexer()){
+          nextShooterState = ShooterState.PASS_TO_INDEXER;
+        }
+        else if(isCargoPresentAtIndexer() & isCargoPresentAtIndexer()){
+          nextShooterState = ShooterState.OFF;
+        }
+      break;
+      case PASS_TO_INDEXER:
+        // the feeder is already by PULL_TO_FEEDER case
+        indexermotor.set(ControlMode.PercentOutput, C.shooter.indexerPower); // on
+        if(isCargoPresentAtIndexer()){
+          nextShooterState = ShooterState.PULL_TO_FEEDER;
+        } 
+      break; 
+      default:
+      break;
+    }
+    if(presentShooterState != nextShooterState){
+      presentShooterState = nextShooterState;
+      SmartDashboard.putNumber("ShooterStateMachine", convertState(presentShooterState));
+    }
   }
+  public double convertState (ShooterState data){
+    switch (data){
+      case OFF:
+        return 0;
+      case PULL_TO_FEEDER:
+        return 1;
+      case PASS_TO_INDEXER:
+        return 2;
+      default:
+        return 1000;
+      }
+  }
+  public boolean intakeDown(){
+    double data = SmartDashboard.getNumber("intake Data", 0);
+    if(data > 0.5){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   public void shooterStop(){
     shootermotor.set(ControlMode.PercentOutput,0);
   }
   public void setShootLow(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
     currentGoal = C.shooter.lowGoal;
-  }
+  }  
   
     public void setShootHigh(){
     shootermotor.set(ControlMode.Velocity,-C.shooter.highGoal);

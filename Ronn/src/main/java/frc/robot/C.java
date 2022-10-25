@@ -79,7 +79,7 @@ public final class C {
         public static final int kPIDLoopIdx = 0;
         public static final double deadband = 0.001;
         public static final double lowGoal = 7100;// Previous speed : 6800
-        public static final double highGoal = 15000;
+        public static final double highGoal = 13500; // Previos speed : 15000, 14000, 14500, 14750, 13000, 13250       
         public static final int feederChannel = 6;
         public static final double feederPower = 0.5;
         public static final int feederSensorChannel = 0;
