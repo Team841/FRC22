@@ -86,7 +86,7 @@ public class Shooter extends SubsystemBase {
             shootermotor.config_kI(C.shooter.kPIDLoopIdx, C.shooter.kI, C.shooter.kTimeoutMs);
             shootermotor.config_kD(C.shooter.kPIDLoopIdx, C.shooter.kD, C.shooter.kTimeoutMs);
   }
-/*
+  /*
   @Override
   public void periodic() {
 
@@ -125,14 +125,27 @@ public class Shooter extends SubsystemBase {
       setIndexerPower(0);
       setFeederPower(0);
     }
-  }*/
+  } */
+  
   @Override
   public void periodic(){
+    if(isCargoPresentAtIndexer()){
+      SmartDashboard.putNumber("Active Sensors", 1);
+    }
+    else if(isCargoPresentAtFeeder()){
+      SmartDashboard.putNumber("Active Sensors", 2);
+    }
+    else if(isCargoPresentAtFeeder() & isCargoPresentAtIndexer()){
+      SmartDashboard.putNumber("Active Sensors", 3);
+    }
+    else{
+      SmartDashboard.putNumber("Active Sensors", 0);
+    }
     ShooterState nextShooterState = presentShooterState;
     switch (presentShooterState){
       case OFF:
         feedermotor.set(ControlMode.PercentOutput, 0); // off
-        indexermotor.set(ControlMode.PercentOutput, 0); // on
+        indexermotor.set(ControlMode.PercentOutput, 0); // off
         if(intakeDown()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         }
@@ -143,7 +156,7 @@ public class Shooter extends SubsystemBase {
         if(isCargoPresentAtFeeder() & !isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.PASS_TO_INDEXER;
         }
-        else if(isCargoPresentAtIndexer() & isCargoPresentAtIndexer()){
+        else if(isCargoPresentAtFeeder() & isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.OFF;
         }
       break;
