@@ -29,11 +29,15 @@ public class Shooter extends SubsystemBase {
   enum ShooterState{
     OFF,
     PULL_TO_FEEDER,
-    PASS_TO_INDEXER
+    PASS_TO_INDEXER,
+    RAMP_UP,
+    SHOOT,
+    RAMP_DOWN
   }
   private ShooterState presentShooterState = ShooterState.OFF;
   private int TimerCounter = 0; 
   private boolean expired = true; 
+  private boolean shooterTrigger = false;
 
   public Shooter() {
     shootermotor.configFactoryDefault();
@@ -149,6 +153,9 @@ public class Shooter extends SubsystemBase {
         if(intakeDown()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         }
+        else if (isShooterTrigger()){
+          nextShooterState = ShooterState.RAMP_UP;
+        }
       break;
       case PULL_TO_FEEDER: 
         feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower); // on
@@ -167,6 +174,24 @@ public class Shooter extends SubsystemBase {
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         } 
       break; 
+      case RAMP_UP:
+      shootermotor.set(ControlMode.Velocity,-currentGoal);
+      if (getVelocity() > C.shooter.percentThreshHold * currentGoal){
+        nextShooterState = ShooterState.SHOOT;
+      }
+      break;
+      case SHOOT:
+      clearShooterTrigger();
+      indexermotor.set(ControlMode.PercentOutput,C.shooter.indexerPower);
+      if (getVelocity() < C.shooter.percentThreshHold * currentGoal){
+        nextShooterState = ShooterState.RAMP_DOWN;
+      }
+      break;
+      case RAMP_DOWN:
+      indexermotor.set(ControlMode.PercentOutput,0); // to stop index motor
+      shooterStop();
+      nextShooterState = ShooterState.PULL_TO_FEEDER;
+      break;
       default:
       break;
     }
@@ -196,18 +221,29 @@ public class Shooter extends SubsystemBase {
       return false;
     }
   }
-
+  public void setTimeOut(double ms){
+    TimerCounter = (int) ms/20; 
+  }
+  public boolean isShooterTrigger(){
+    return shooterTrigger;
+  }
+  public void clearShooterTrigger(){
+    shooterTrigger=false;
+  }
   public void shooterStop(){
     shootermotor.set(ControlMode.PercentOutput,0);
+    shooterTrigger=false;
   }
   public void setShootLow(){
-    shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
+  // shootermotor.set(ControlMode.Velocity,-C.shooter.lowGoal);
     currentGoal = C.shooter.lowGoal;
+    shooterTrigger=true;
   }  
   
     public void setShootHigh(){
-    shootermotor.set(ControlMode.Velocity,-C.shooter.highGoal);
+  // shootermotor.set(ControlMode.Velocity,-C.shooter.highGoal);
     currentGoal = C.shooter.highGoal;
+    shooterTrigger=true;
   }
 
   public void feederOn(){
