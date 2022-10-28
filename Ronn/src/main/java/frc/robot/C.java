@@ -81,11 +81,11 @@ public final class C {
         public static final double lowGoal = 7100;// Previous speed : 6800
         public static final double highGoal = 13500; // Previos speed : 15000, 14000, 14500, 14750, 13000, 13250       
         public static final int feederChannel = 7;
-        public static final double feederPower = -0.25;
-        public static final int feederSensorChannel = 0;
+        public static final double feederPower = -0.20;
+        public static final int feederSensorChannel = 1;
         public static final double percentThreshHold = 0.9;
         public static final int indexerMotorChannel = 6;
-        public static final int indexerSensorChannel = 1;
+        public static final int indexerSensorChannel = 0;
         public static final Double indexerPower = 0.25;
         public static final int intakeSensorChannel = 2;
         public static final int maxCount = 50; //20 * 50 = 1000 or 1 second

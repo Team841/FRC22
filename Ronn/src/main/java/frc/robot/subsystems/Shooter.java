@@ -46,6 +46,7 @@ public class Shooter extends SubsystemBase {
     indexermotor.configFactoryDefault();
     feedermotor.configFactoryDefault();
     feedermotor.setNeutralMode(NeutralMode.Brake);
+    indexermotor.setNeutralMode(NeutralMode.Brake);
     //
     shootermotor.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
     shootermotor.setStatusFramePeriod(StatusFrame.Status_1_General,20);
@@ -158,12 +159,19 @@ public class Shooter extends SubsystemBase {
         }
       break;
       case PULL_TO_FEEDER: 
+        if(intakeDown()){
+          setTimeOut(2000);
+        }
         feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower); // on
         indexermotor.set(ControlMode.PercentOutput, 0);  // off
         if(isCargoPresentAtFeeder() & !isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.PASS_TO_INDEXER;
+          setTimeOut(1000);
         }
         else if(isCargoPresentAtFeeder() & isCargoPresentAtIndexer()){
+          nextShooterState = ShooterState.OFF;
+        }
+        else if(isTimedOut()){
           nextShooterState = ShooterState.OFF;
         }
       break;
@@ -173,17 +181,24 @@ public class Shooter extends SubsystemBase {
         if(isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         } 
+        else if(isTimedOut()){
+          nextShooterState = ShooterState.PULL_TO_FEEDER;
+        }
       break; 
       case RAMP_UP:
       shootermotor.set(ControlMode.Velocity,-currentGoal);
       if (getVelocity() > C.shooter.percentThreshHold * currentGoal){
         nextShooterState = ShooterState.SHOOT;
+        setTimeOut(1000);
       }
       break;
       case SHOOT:
       clearShooterTrigger();
       indexermotor.set(ControlMode.PercentOutput,C.shooter.indexerPower);
       if (getVelocity() < C.shooter.percentThreshHold * currentGoal){
+        nextShooterState = ShooterState.RAMP_DOWN;
+      }
+      else if(isTimedOut()){
         nextShooterState = ShooterState.RAMP_DOWN;
       }
       break;
@@ -199,6 +214,7 @@ public class Shooter extends SubsystemBase {
       presentShooterState = nextShooterState;
       SmartDashboard.putNumber("ShooterStateMachine", convertState(presentShooterState));
     }
+    updateTimer();
   }
   public double convertState (ShooterState data){
     switch (data){
@@ -224,6 +240,19 @@ public class Shooter extends SubsystemBase {
   public void setTimeOut(double ms){
     TimerCounter = (int) ms/20; 
   }
+  public void updateTimer(){
+    if(TimerCounter != 0){
+      TimerCounter -= 1;
+      expired = false;
+    }
+    else{
+      expired = true;
+    }
+  }
+  public boolean isTimedOut(){
+    return expired;
+  }
+
   public boolean isShooterTrigger(){
     return shooterTrigger;
   }
