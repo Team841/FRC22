@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private final TalonFX shootermotor = new TalonFX(C.shooter.shooterChannel);
+  private final TalonFX topshooter = new TalonFX(C.shooter.topshooterChannel);
   private final TalonFX feedermotor = new TalonFX(C.shooter.feederChannel);
   private final TalonFX indexermotor = new TalonFX(C.shooter.indexerMotorChannel);
   private final DigitalInput feedersensor = new DigitalInput(C.shooter.feederSensorChannel);
@@ -43,6 +44,12 @@ public class Shooter extends SubsystemBase {
     shootermotor.configFactoryDefault();
     shootermotor.configNeutralDeadband(C.shooter.deadband);
     shootermotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
+    topshooter.configFactoryDefault();
+    topshooter.configNeutralDeadband(C.shooter.deadband);
+    topshooter.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
+   
+   
+   
     indexermotor.configFactoryDefault();
     feedermotor.configFactoryDefault();
     feedermotor.setNeutralMode(NeutralMode.Brake);
@@ -57,6 +64,18 @@ public class Shooter extends SubsystemBase {
     shootermotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
     shootermotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
     shootermotor.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+
+    topshooter.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
+    topshooter.setStatusFramePeriod(StatusFrame.Status_1_General,20);
+    topshooter.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);
+    topshooter.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20); //Shooter Motor uses this, set to 20
+    topshooter.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer,255);
+    topshooter.setStatusFramePeriod(StatusFrame.Status_12_Feedback1,255);
+    topshooter.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0,255);
+    topshooter.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1,255);
+    topshooter.setStatusFramePeriod(StatusFrame.Status_15_FirmwareApiStatus,255);
+
+
   
     indexermotor.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,255);
     indexermotor.setStatusFramePeriod(StatusFrame.Status_1_General,20);
@@ -85,11 +104,21 @@ public class Shooter extends SubsystemBase {
         shootermotor.configNominalOutputReverse(0,C.shooter.kTimeoutMs);
         shootermotor.configPeakOutputForward(1,C.shooter.kTimeoutMs);
         shootermotor.configPeakOutputReverse(-1,C.shooter.kTimeoutMs);
+
+        topshooter.configNominalOutputForward(0, C.shooter.kTimeoutMs);
+        topshooter.configNominalOutputReverse(0,C.shooter.kTimeoutMs);
+        topshooter.configPeakOutputForward(1,C.shooter.kTimeoutMs);
+        topshooter.configPeakOutputReverse(-1,C.shooter.kTimeoutMs);
         		/* Config the Velocity closed loop gains in slot0 */
             shootermotor.config_kF(C.shooter.kPIDLoopIdx, C.shooter.kF, C.shooter.kTimeoutMs);
             shootermotor.config_kP(C.shooter.kPIDLoopIdx, C.shooter.kP, C.shooter.kTimeoutMs);
             shootermotor.config_kI(C.shooter.kPIDLoopIdx, C.shooter.kI, C.shooter.kTimeoutMs);
             shootermotor.config_kD(C.shooter.kPIDLoopIdx, C.shooter.kD, C.shooter.kTimeoutMs);
+
+            topshooter.config_kF(C.shooter.kPIDLoopIdx, C.shooter.kF, C.shooter.kTimeoutMs);
+            topshooter.config_kP(C.shooter.kPIDLoopIdx, C.shooter.kP, C.shooter.kTimeoutMs);
+            topshooter.config_kI(C.shooter.kPIDLoopIdx, C.shooter.kI, C.shooter.kTimeoutMs);
+            topshooter.config_kD(C.shooter.kPIDLoopIdx, C.shooter.kD, C.shooter.kTimeoutMs);
   }
   /*
   @Override
@@ -187,6 +216,7 @@ public class Shooter extends SubsystemBase {
       break; 
       case RAMP_UP:
       shootermotor.set(ControlMode.Velocity,-currentGoal);
+      topshooter.set(ControlMode.Velocity,currentGoal);
       if (getVelocity() > C.shooter.percentThreshHold * currentGoal){
         nextShooterState = ShooterState.SHOOT;
         setTimeOut(1000);
@@ -261,6 +291,7 @@ public class Shooter extends SubsystemBase {
   }
   public void shooterStop(){
     shootermotor.set(ControlMode.PercentOutput,0);
+    topshooter.set(ControlMode.PercentOutput,0);
     shooterTrigger=false;
   }
   public void setShootLow(){
