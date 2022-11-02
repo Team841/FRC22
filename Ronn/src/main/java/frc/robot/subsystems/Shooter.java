@@ -183,8 +183,8 @@ public class Shooter extends SubsystemBase {
     ShooterState nextShooterState = presentShooterState;
     switch (presentShooterState){
       case OFF:
-        feedermotor.set(ControlMode.PercentOutput, 0); // off
-        indexermotor.set(ControlMode.PercentOutput, 0); // off
+        feedermotor.set(ControlMode.PercentOutput, 0); // off, velocity control
+        indexermotor.set(ControlMode.PercentOutput, 0); // off, position control
         if(intakeDown()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         }
@@ -192,7 +192,7 @@ public class Shooter extends SubsystemBase {
           nextShooterState = ShooterState.RAMP_UP;
         }
       break;
-      case PULL_TO_FEEDER: 
+      case PULL_TO_FEEDER: // change to velocity mode
         if(intakeDown()){
           setTimeOut(2000);
         }
@@ -210,7 +210,7 @@ public class Shooter extends SubsystemBase {
         }
       break;
       case PASS_TO_INDEXER:
-        // the feeder is already by PULL_TO_FEEDER case
+        // the feeder is already by PULL_TO_FEEDER case, update to velocity mode
         indexermotor.set(ControlMode.PercentOutput, C.shooter.indexerPower); // on
         if(isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
@@ -227,7 +227,7 @@ public class Shooter extends SubsystemBase {
         setTimeOut(1000);
       }
       break;
-      case SHOOT:
+      case SHOOT: // update to position or displacement control of the index
       clearShooterTrigger();
       indexermotor.set(ControlMode.PercentOutput,C.shooter.indexerPower);
       if (getVelocity() < C.shooter.percentThreshHold * currentGoal){
