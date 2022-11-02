@@ -41,13 +41,18 @@ public class Shooter extends SubsystemBase {
   private boolean shooterTrigger = false;
 
   public Shooter() {
+    
+    SmartDashboard.putNumber("Low Setpoint",C.shooter.lowGoal);
+    SmartDashboard.putNumber("High Setpoint",C.shooter.highGoal);
+    SmartDashboard.putNumber("wheel difference",C.shooter.overdrive);
     shootermotor.configFactoryDefault();
     shootermotor.configNeutralDeadband(C.shooter.deadband);
     shootermotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
+    shootermotor.setNeutralMode(NeutralMode.Brake);
     topshooter.configFactoryDefault();
     topshooter.configNeutralDeadband(C.shooter.deadband);
     topshooter.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,C.shooter.kPIDLoopIdx,C.shooter.kTimeoutMs);
-   
+    topshooter.setNeutralMode(NeutralMode.Brake);
    
    
     indexermotor.configFactoryDefault();
@@ -216,7 +221,7 @@ public class Shooter extends SubsystemBase {
       break; 
       case RAMP_UP:
       shootermotor.set(ControlMode.Velocity,-currentGoal);
-      topshooter.set(ControlMode.Velocity,currentGoal);
+      topshooter.set(ControlMode.Velocity,currentGoal*C.shooter.overdrive);
       if (getVelocity() > C.shooter.percentThreshHold * currentGoal){
         nextShooterState = ShooterState.SHOOT;
         setTimeOut(1000);
