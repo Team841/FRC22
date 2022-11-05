@@ -185,7 +185,7 @@ public class Shooter extends SubsystemBase {
       case OFF:
         feedermotor.set(ControlMode.PercentOutput, 0); // off, velocity control
         indexermotor.set(ControlMode.PercentOutput, 0); // off, position control
-        if(intakeDown()){
+        if(intakeDown()&!isCargoPresentAtFeeder()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         }
         else if (isShooterTrigger()){
