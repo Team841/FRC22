@@ -540,5 +540,16 @@ slowMode = true;
 
   slowMode = false; 
   }
-      
+  public void setDriveBrakeMode(){
+      left1.setNeutralMode(NeutralMode.Brake);
+      left2.setNeutralMode(NeutralMode.Brake);
+      right1.setNeutralMode(NeutralMode.Brake);
+      right2.setNeutralMode(NeutralMode.Brake);
+  }    
+  public void setDriveCoastMode(){
+    left1.setNeutralMode(NeutralMode.Coast);
+    left2.setNeutralMode(NeutralMode.Coast);
+    right1.setNeutralMode(NeutralMode.Coast);
+    right2.setNeutralMode(NeutralMode.Coast);
+  }
   }
