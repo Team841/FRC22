@@ -311,6 +311,13 @@ public class Shooter extends SubsystemBase {
     shooterTrigger=true;
   }
 
+  public void rampUp(){
+    if(presentShooterState == ShooterState.OFF){
+      currentGoal = C.shooter.highGoal;  
+      shootermotor.set(ControlMode.Velocity, -currentGoal);
+    }
+  }
+
   public void feederOn(){
     feedermotor.set(ControlMode.PercentOutput,C.shooter.feederPower);
   }

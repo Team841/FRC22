@@ -101,7 +101,7 @@ public class RobotContainer {
     //DRIVER
     //Auto Align
     final JoystickButton AutoAlign = new JoystickButton(m_driverCtrlLeft, C.OI.kA);
-    AutoAlign.whileHeld(new DriveTowardsGoal(m_Drivetrain));
+    AutoAlign.whileHeld(new DriveTowardsGoal(m_Drivetrain, m_shooter));
     //Quick turn
     final JoystickButton qT = new JoystickButton(m_driverCtrlLeft, C.OI.kRB);
     qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
