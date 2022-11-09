@@ -33,7 +33,7 @@ public class Auto2BallOffTarmacHigh extends SequentialCommandGroup {
     new ShooterStop (m_Shooter).withTimeout(1),
     new ShootHigh (m_Shooter).withTimeout(3),
     new SetDriveStraightPower((m_Drivetrain),0.3).withTimeout(0.25)
-    );//drive away
+    );//drive far away
 
 
 
