@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import frc.robot.C;
+import frc.robot.C.intake;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,6 +40,7 @@ public class Shooter extends SubsystemBase {
   private int TimerCounter = 0; 
   private boolean expired = true; 
   private boolean shooterTrigger = false;
+  private boolean intake_full = true;
   // private boolean passedIndex = false;
   // private boolean shotPull = false;
 
@@ -200,7 +202,7 @@ public class Shooter extends SubsystemBase {
           nextShooterState = ShooterState.RAMP_UP;
           setTimeOut(1000);
         }
-        else if(intakeDown()&!isCargoPresentAtFeeder()){  // to PULL_TO_FEEDER state
+        else if(intakeDown()&!intake_full){  // to PULL_TO_FEEDER state
           nextShooterState = ShooterState.PULL_TO_FEEDER;
           setTimeOut(1000);
         }
@@ -217,7 +219,7 @@ public class Shooter extends SubsystemBase {
           setTimeOut(2000);
         }
         feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower); // on
-        indexermotor.set(ControlMode.PercentOutput, -0.05);  // off
+        indexermotor.set(ControlMode.PercentOutput, 0);  // off
     
         if(isCargoPresentAtFeeder()){
           nextShooterState = ShooterState.OFF;
@@ -240,6 +242,9 @@ public class Shooter extends SubsystemBase {
         /* if (shotPull){
           nextShooterState = ShooterState.OFF;
         } */
+        if(isCargoPresentAtIndexer()){
+          intake_full = true;
+        }
         if(isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.OFF;
         }   
@@ -269,6 +274,7 @@ public class Shooter extends SubsystemBase {
       indexermotor.set(ControlMode.PercentOutput,0); // to stop index motor
       shooterStop();
       nextShooterState = ShooterState.OFF;
+      intake_full = false;
       // shotPull = true;
       break;
       default:
