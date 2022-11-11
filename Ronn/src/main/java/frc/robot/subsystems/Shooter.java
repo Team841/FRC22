@@ -39,6 +39,8 @@ public class Shooter extends SubsystemBase {
   private int TimerCounter = 0; 
   private boolean expired = true; 
   private boolean shooterTrigger = false;
+  private boolean passedIndex = false;
+  private boolean shotPull = false;
 
   public Shooter() {
     
@@ -183,9 +185,18 @@ public class Shooter extends SubsystemBase {
     ShooterState nextShooterState = presentShooterState;
     switch (presentShooterState){
       case OFF:
+
+        SmartDashboard.putNumber("State", 0);
+
         feedermotor.set(ControlMode.PercentOutput, 0); // off, velocity control
         indexermotor.set(ControlMode.PercentOutput, 0); // off, position control
-        if(intakeDown()&!isCargoPresentAtFeeder()){
+        if(!intakeDown()){
+          passedIndex = false;
+        }
+        if(shotPull){
+          shotPull = false;
+        }
+        if(intakeDown()&!isCargoPresentAtFeeder()&!passedIndex){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         }
         else if (isShooterTrigger()){
@@ -193,28 +204,40 @@ public class Shooter extends SubsystemBase {
         }
       break;
       case PULL_TO_FEEDER: // change to velocity mode
+
+        SmartDashboard.putNumber("State", 1);
+
         if(intakeDown()){
           setTimeOut(2000);
         }
         feedermotor.set(ControlMode.PercentOutput, C.shooter.feederPower); // on
         indexermotor.set(ControlMode.PercentOutput, 0);  // off
-        if(isCargoPresentAtFeeder() & !isCargoPresentAtIndexer()){
+      
+        if(isCargoPresentAtFeeder() & !isCargoPresentAtIndexer()&!passedIndex){
           nextShooterState = ShooterState.PASS_TO_INDEXER;
           setTimeOut(1000);
         }
-        else if(isCargoPresentAtFeeder() & isCargoPresentAtIndexer()){
+        else if(isCargoPresentAtFeeder() & passedIndex){
           nextShooterState = ShooterState.OFF;
         }
-        else if(isTimedOut()){
+        else if(isTimedOut()&!passedIndex){
           nextShooterState = ShooterState.OFF;
         }
+
       break;
       case PASS_TO_INDEXER:
+
+        SmartDashboard.putNumber("State", 2);
+
         // the feeder is already by PULL_TO_FEEDER case, update to velocity mode
         indexermotor.set(ControlMode.PercentOutput, C.shooter.indexerPower); // on
+        passedIndex = true;
+        if (shotPull){
+          nextShooterState = ShooterState.OFF;
+        }
         if(isCargoPresentAtIndexer()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
-        } 
+        }   
         else if(isTimedOut()){
           nextShooterState = ShooterState.PULL_TO_FEEDER;
         }
@@ -241,6 +264,7 @@ public class Shooter extends SubsystemBase {
       indexermotor.set(ControlMode.PercentOutput,0); // to stop index motor
       shooterStop();
       nextShooterState = ShooterState.PULL_TO_FEEDER;
+      shotPull = true;
       break;
       default:
       break;
