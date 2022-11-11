@@ -84,7 +84,7 @@ public final class C {
         //Previous single roller higoal shot - 13500 
         public static final double overdrive = 1.3; // Best value 1.3 for proto1; factor to multiply by for top wheel RPM setting     
         public static final int feederChannel = 7;
-        public static final double feederPower = -0.40;
+        public static final double feederPower = -0.45;
         public static final int feederSensorChannel = 1;
         public static final double percentThreshHold = 0.9;
         public static final int indexerMotorChannel = 6;
