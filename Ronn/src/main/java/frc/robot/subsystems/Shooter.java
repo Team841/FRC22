@@ -358,6 +358,11 @@ public class Shooter extends SubsystemBase {
     shooterTrigger = true;
   }
 
+  public void setShootMid(){
+    currentGoal = C.shooter.midGoal;
+    shooterTrigger = true;
+  }
+
   public void rampUp(){
     if(presentShooterState == ShooterState.OFF){
       currentGoal = C.shooter.highGoal;  

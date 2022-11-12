@@ -17,6 +17,7 @@ import frc.robot.commands.Auto1BallDefense;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ShootDriveOff;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.teeheeAuto;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -76,7 +77,8 @@ public class RobotContainer {
 
     
     //chooser.setDefaultOption("Shoots Low and Drive Off Tarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
-    chooser.setDefaultOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    //chooser.setDefaultOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    chooser.setDefaultOption("Shoot drive off", new ShootDriveOff(m_Drivetrain, m_shooter, m_intake));
     chooser.addOption("Teehee Auto", new teeheeAuto(m_Drivetrain, m_shooter, m_intake));
     chooser.addOption("Drive Off Tarmac", new AutoDriveOff(m_Drivetrain));
     chooser.addOption("Shoots High and Drive Off Tarmac", new Auto1OffTarmacHigh(m_Drivetrain, m_shooter));
