@@ -18,6 +18,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.ShootLow;
+import frc.robot.commands.teeheeAuto;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -76,6 +77,7 @@ public class RobotContainer {
     
     //chooser.setDefaultOption("Shoots Low and Drive Off Tarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
     chooser.setDefaultOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    chooser.addOption("Teehee Auto", new teeheeAuto(m_Drivetrain, m_shooter, m_intake));
     chooser.addOption("Drive Off Tarmac", new AutoDriveOff(m_Drivetrain));
     chooser.addOption("Shoots High and Drive Off Tarmac", new Auto1OffTarmacHigh(m_Drivetrain, m_shooter));
     chooser.addOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
@@ -130,6 +132,10 @@ public class RobotContainer {
     final JoystickButton HighShoot = new JoystickButton(m_codriverCtrl, C.OI.kRB);
     HighShoot.whenPressed(new InstantCommand(m_shooter::setShootHigh, m_shooter));
     HighShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    // LongShot
+    final JoystickButton LongShoot = new JoystickButton(m_codriverCtrl, C.OI.kY);
+    LongShoot.whenPressed(new InstantCommand(m_shooter::setShootLong, m_shooter));
+    LongShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
     //Climb
     final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));

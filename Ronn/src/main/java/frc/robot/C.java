@@ -81,6 +81,7 @@ public final class C {
         public static final double deadband = 0.001;
         public static final double lowGoal = 4000;// Previous speed : 6800
         public static final double highGoal = 9000; // Previos speed : 11000 for "flat" balls, 9000 for good shot, 8250
+        public static final double longGoal = 20000;
         //Previous single roller higoal shot - 13500 
         public static final double overdrive = 1.3; // Best value 1.3 for proto1; factor to multiply by for top wheel RPM setting     
         public static final int feederChannel = 7;

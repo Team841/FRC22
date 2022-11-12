@@ -352,6 +352,11 @@ public class Shooter extends SubsystemBase {
     currentGoal = C.shooter.highGoal;
     shooterTrigger=true;
   }
+  
+  public void setShootLong(){
+    currentGoal = C.shooter.longGoal;
+    shooterTrigger = true;
+  }
 
   public void rampUp(){
     if(presentShooterState == ShooterState.OFF){
