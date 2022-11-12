@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
   private int TimerCounter = 0; 
   private boolean expired = true; 
   private boolean shooterTrigger = false;
-  private boolean intake_full = true;
+  private boolean intake_full = false;
   // private boolean passedIndex = false;
   // private boolean shotPull = false;
 
@@ -243,9 +243,9 @@ public class Shooter extends SubsystemBase {
           nextShooterState = ShooterState.OFF;
         } */
         if(isCargoPresentAtIndexer()){
-          intake_full = true;
-        }
-        if(isCargoPresentAtIndexer()){
+          if(isCargoPresentAtIndexer()){
+            intake_full = true;
+          }
           nextShooterState = ShooterState.OFF;
         }   
         else if(isTimedOut()){
