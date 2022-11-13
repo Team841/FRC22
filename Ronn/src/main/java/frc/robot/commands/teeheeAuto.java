@@ -68,7 +68,7 @@ public class teeheeAuto extends SequentialCommandGroup {
 
       new RetractIntake(m_Intake).withTimeout(0.1),
 
-      new SetDriveStraightPower((m_Drivetrain), 0.1).withTimeout(1.5)
+      new SetDriveStraightPower((m_Drivetrain), 0.2).withTimeout(2)
     
     );
   }

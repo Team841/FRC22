@@ -16,11 +16,18 @@ public class ShootDriveOff extends SequentialCommandGroup {
   /** Creates a new Auto2BallOffTarmacHigh. */
   public ShootDriveOff(Drivetrain m_Drivetrain,Shooter m_Shooter,Intake m_Intake) {
     super(
-      new ShootMid(m_Shooter).withTimeout(3),
-      new ShooterStop (m_Shooter).withTimeout(1),
-      new ShootMid (m_Shooter).withTimeout(3),
 
-      new SetDriveStraightPower((m_Drivetrain),-0.3).withTimeout(1.85)
+      new IntakeCargo(m_Intake).withTimeout(0.1),
+
+      new ShootMid(m_Shooter).withTimeout(1.5),
+      new ShooterStop (m_Shooter).withTimeout(0.2),
+      new ShootMid (m_Shooter).withTimeout(1.5),
+
+      new SetDriveStraightPower((m_Drivetrain), 0.2).withTimeout(2),
+
+      new RetractIntake(m_Intake).withTimeout(0.1)
+      
+
     );
   }
 }

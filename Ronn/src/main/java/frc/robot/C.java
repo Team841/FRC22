@@ -80,7 +80,7 @@ public final class C {
         public static final int kPIDLoopIdx = 0;
         public static final double deadband = 0.001;
         public static final double lowGoal = 4000;// Previous speed : 6800
-        public static final double highGoal = 9000; // Previos speed : 11000 for "flat" balls, 9000 for good shot, 8250
+        public static final double highGoal = 8800; // Previos speed : 11000 for "flat" balls, 9000 for good shot, 8250
         public static final double longGoal = 10400; // previous 20000, 19500, 19000, 14250, 11000, 10000, 9700, 9400
         public static final double midGoal = 7750;
         //Previous single roller higoal shot - 13500 
