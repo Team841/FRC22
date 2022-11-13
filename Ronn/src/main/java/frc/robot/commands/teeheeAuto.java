@@ -59,7 +59,7 @@ public class teeheeAuto extends SequentialCommandGroup {
       new SetDriveStraightPower((m_Drivetrain), 0.4).withTimeout(0.5),
       new SetDriveStraightPower(m_Drivetrain, 0.1).withTimeout(0.1),
 
-      new SetDriveStraightPower((m_Drivetrain), -0.4).withTimeout(0.4),
+      new SetDriveStraightPower((m_Drivetrain), -0.4).withTimeout(0.45),
       new SetDriveStraightPower(m_Drivetrain, -0.1).withTimeout(0.2),
 
       new SetDriveStraightPower((m_Drivetrain), 0).withTimeout(0.5),

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto1OffTarmac;
@@ -138,6 +140,10 @@ public class RobotContainer {
     final JoystickButton LongShoot = new JoystickButton(m_codriverCtrl, C.OI.kY);
     LongShoot.whenPressed(new InstantCommand(m_shooter::setShootLong, m_shooter));
     LongShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    // midShoot
+    final JoystickButton MidShoot = new JoystickButton(m_codriverCtrl, C.OI.kB);
+    MidShoot.whenPressed(new InstantCommand(m_shooter::setShootMid, m_shooter));
+    MidShoot.whenReleased(new InstantCommand(m_shooter::setShootMid, m_shooter));
     //Climb
     final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));
