@@ -71,6 +71,7 @@ public final class C {
     }
     public static final class shooter{
         public static final int shooterChannel = 8;
+        public static final int topshooterChannel = 9;
         public static final double kF = 0.05;
         public static final double kP = 0.05;
         public static final double kI = 0;
@@ -78,15 +79,19 @@ public final class C {
         public static final int kTimeoutMs = 30;
         public static final int kPIDLoopIdx = 0;
         public static final double deadband = 0.001;
-        public static final double lowGoal = 7100;// Previous speed : 6800
-        public static final double highGoal = 15000;
-        public static final int feederChannel = 6;
-        public static final double feederPower = 0.5;
-        public static final int feederSensorChannel = 0;
+        public static final double lowGoal = 4000;// Previous speed : 6800
+        public static final double highGoal = 8800; // Previos speed : 11000 for "flat" balls, 9000 for good shot, 8250
+        public static final double longGoal = 10400; // previous 20000, 19500, 19000, 14250, 11000, 10000, 9700, 9400
+        public static final double midGoal = 7750;
+        //Previous single roller higoal shot - 13500 
+        public static final double overdrive = 1.3; // Best value 1.3 for proto1; factor to multiply by for top wheel RPM setting     
+        public static final int feederChannel = 7;
+        public static final double feederPower = -0.45;
+        public static final int feederSensorChannel = 1;
         public static final double percentThreshHold = 0.9;
-        public static final int indexerMotorChannel = 7;
-        public static final int indexerSensorChannel = 1;
-        public static final Double indexerPower = -0.5;
+        public static final int indexerMotorChannel = 6;
+        public static final int indexerSensorChannel = 0;
+        public static final Double indexerPower = 0.45;
         public static final int intakeSensorChannel = 2;
         public static final int maxCount = 50; //20 * 50 = 1000 or 1 second
 

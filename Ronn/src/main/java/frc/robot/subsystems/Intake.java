@@ -10,13 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.C;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class Intake extends SubsystemBase {
   private final TalonFX motorintake = new TalonFX(C.intake.motorChannel);
-  private final Solenoid solenoidintake =new Solenoid(PneumaticsModuleType.REVPH, C.intake.solenoidChannel);
+  private final Solenoid solenoidintake = new Solenoid(PneumaticsModuleType.REVPH, C.intake.solenoidChannel);
   /** Creates a new Intake. */
-  public Intake() {}
+  public Intake() {
+    SmartDashboard.putNumber("intake Data", 0);
+  }
 
   @Override
   public void periodic() {
@@ -33,8 +36,10 @@ public class Intake extends SubsystemBase {
   }
   public void intakeDown(){
     solenoidintake.set(true);
+    SmartDashboard.putNumber("intake Data", 1);
   }
   public void intakeUp(){
     solenoidintake.set(false);
+    SmartDashboard.putNumber("intake Data", 0);
   }
 }

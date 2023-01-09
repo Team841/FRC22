@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto1OffTarmac;
@@ -17,7 +19,9 @@ import frc.robot.commands.Auto1BallDefense;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ShootDriveOff;
 import frc.robot.commands.ShootLow;
+import frc.robot.commands.teeheeAuto;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -75,7 +79,9 @@ public class RobotContainer {
 
     
     //chooser.setDefaultOption("Shoots Low and Drive Off Tarmac", new Auto1OffTarmac(m_Drivetrain, m_shooter));
-    chooser.setDefaultOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    //chooser.setDefaultOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
+    chooser.addOption("Shoot drive off", new ShootDriveOff(m_Drivetrain, m_shooter, m_intake));
+    chooser.setDefaultOption("Teehee Auto", new teeheeAuto(m_Drivetrain, m_shooter, m_intake));
     chooser.addOption("Drive Off Tarmac", new AutoDriveOff(m_Drivetrain));
     chooser.addOption("Shoots High and Drive Off Tarmac", new Auto1OffTarmacHigh(m_Drivetrain, m_shooter));
     chooser.addOption("2 Ball High Goal and Drive Off Tarmac", new Auto2BallOffTarmacHigh(m_Drivetrain, m_shooter, m_intake));
@@ -101,7 +107,7 @@ public class RobotContainer {
     //DRIVER
     //Auto Align
     final JoystickButton AutoAlign = new JoystickButton(m_driverCtrlLeft, C.OI.kA);
-    AutoAlign.whileHeld(new DriveTowardsGoal(m_Drivetrain));
+    AutoAlign.whileHeld(new DriveTowardsGoal(m_Drivetrain, m_shooter));
     //Quick turn
     final JoystickButton qT = new JoystickButton(m_driverCtrlLeft, C.OI.kRB);
     qT.whenPressed(new InstantCommand(m_Drivetrain::setQuickTurn, m_Drivetrain));
@@ -130,6 +136,14 @@ public class RobotContainer {
     final JoystickButton HighShoot = new JoystickButton(m_codriverCtrl, C.OI.kRB);
     HighShoot.whenPressed(new InstantCommand(m_shooter::setShootHigh, m_shooter));
     HighShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    // LongShot
+    final JoystickButton LongShoot = new JoystickButton(m_codriverCtrl, C.OI.kY);
+    LongShoot.whenPressed(new InstantCommand(m_shooter::setShootLong, m_shooter));
+    LongShoot.whenReleased(new InstantCommand(m_shooter::shooterStop, m_shooter));
+    // midShoot
+    final JoystickButton MidShoot = new JoystickButton(m_codriverCtrl, C.OI.kB);
+    MidShoot.whenPressed(new InstantCommand(m_shooter::setShootMid, m_shooter));
+    MidShoot.whenReleased(new InstantCommand(m_shooter::setShootMid, m_shooter));
     //Climb
     final JoystickButton Climb = new JoystickButton(m_codriverCtrl, C.OI.kLB);
     Climb.whenReleased(new InstantCommand(m_climber::retract, m_climber));

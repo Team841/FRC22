@@ -15,15 +15,27 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class Auto2BallOffTarmacHigh extends SequentialCommandGroup {
   /** Creates a new Auto2BallOffTarmacHigh. */
   public Auto2BallOffTarmacHigh(Drivetrain m_Drivetrain,Shooter m_Shooter,Intake m_Intake) {
-    super(new ShootHigh(m_Shooter).withTimeout(1), 
-    new ShooterStop(m_Shooter).withTimeout(.1),
-    new IntakeCargo(m_Intake).withTimeout(3),
-    new SetDriveStraightPower((m_Drivetrain),0.4).withTimeout(1.0),
-    new SetDriveStraightPower(m_Drivetrain, -0.25).withTimeout(1.15),
+    super(  
+    /* new SetDriveStraightPower(m_Drivetrain, 0.42).withTimeout(0.6),//drive to first spot
+    new SetDriveStraightPower(m_Drivetrain, 0.10).withTimeout(0.3),
+    new StopDrive(m_Drivetrain).withTimeout(0.55),//stop
+    new ShootHigh(m_Shooter).withTimeout(1), //shoot */ 
+    //new ShooterStop(m_Shooter).withTimeout(.1),
+    new IntakeCargo(m_Intake).withTimeout(0.1),
+    new SetDriveStraightPower((m_Drivetrain),0.5).withTimeout(1),//drive to ball
+    new SetDriveStraightPower(m_Drivetrain, 0.10).withTimeout(0.3),
+    new StopDrive(m_Drivetrain).withTimeout(0.5),//drive to second spot
+    /*
+    new SetDriveStraightPower(m_Drivetrain, -0.5).withTimeout(0.55),//drive other direction */
+    new SetDriveStraightPower(m_Drivetrain, -0.10).withTimeout(0.4), 
     new RetractIntake(m_Intake).withTimeout(1),
-    new ShootHigh(m_Shooter).withTimeout(1),
-    new ShooterStop (m_Shooter).withTimeout(.1),
-    new SetDriveStraightPower((m_Drivetrain),0.4).withTimeout(1));
+    new ShootHigh(m_Shooter).withTimeout(3),//shoot
+    new ShooterStop (m_Shooter).withTimeout(1),
+    new ShootHigh (m_Shooter).withTimeout(3),
+    new SetDriveStraightPower((m_Drivetrain),0.3).withTimeout(0.25)
+    );//drive far away
+
+
 
 
     // Add your commands in the addCommands() call, e.g.
