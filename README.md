@@ -7,6 +7,8 @@
 
 It implements an autonomous mode, velocity PID control of the shooter, a state machine for our indexor and intakes, automatic camera detection and aiming, and all the code needed to operate the different parts of our robot.
 
+<b>Special thanks to Team 254 for the cheesy drive code</b>
+
 _THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
