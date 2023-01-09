@@ -1,6 +1,5 @@
 # FRC22
-2022 season for Rapid React FIRST Robtics Competiaiont
-FRC-2019
+2022 season for Rapid React FIRST Robtics Competition
 ===========
 
 ![](FRC-2022.jpg)
